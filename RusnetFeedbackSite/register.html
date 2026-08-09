@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | АНО «Руснэт»</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <div class="logo">
+            <img src="img/rusnet-logo.png" alt="Логотип Руснэт" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html">На главную</a>
+            <a href="login.html">Вход</a>
+        </nav>
+    </div>
+</header>
+<div class="login-page-wrapper">
+    <div class="login-card">
+        <h2>Регистрация</h2>
+        <p class="subtitle">Создайте аккаунт для доступа к системе</p>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" name="name" placeholder="Иван" required minlength="2">
+                <span class="hint">Минимум 2 символа</span>
+            </div>
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" name="email" placeholder="name@rusnet.su" required
+                       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                       title="Используйте только английские буквы и стандартные символы email">
+                <span class="hint">Только английские буквы</span>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6" maxlength="20">
+                <span class="hint">От 6 до 20 символов</span>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="agreement" name="agreement" required>
+                <label for="agreement">
+                    Я согласен с <a href="https://rusnet.su/polzovatelskoe-soglashenie/" target="_blank">пользовательским соглашением</a>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+        </form>
+        <div class="divider">
+            <span>или</span>
+        </div>
+        <a href="login.html" class="btn btn-outline" style="width: 100%; margin-top: 10px;">
+            Уже есть аккаунт? Войти
+        </a>
+        <a href="index.html" class="back-link" style="display: block; text-align: center; margin-top: 15px;">
+            ← Вернуться на главную
+        </a>
+    </div>
+</div>
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-contacts">
+                <p>Алтайский край, г. Барнаул, ул. Никитина 67</p>
+                <p>T: +7 964 086 20-32</p>
+                <p>E: info@rusnet.su</p>
+            </div>
+            <div class="footer-social">
+                <a href="https://vk.com/ano_rusnet_su" target="_blank" class="btn btn-outline vk-btn">
+                    Мы ВКонтакте
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 АНО «Руснэт». Все права защищены.</p>
+            <p class="user-agreement">
+                <a href="https://rusnet.su/polzovatelskoe-soglashenie/" target="_blank">Пользовательское соглашение</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<script src="api.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('registerForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                try {
+                    const response = await fetch('http://localhost:5000/api/auth/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, password })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        alert('Регистрация успешна! Теперь войдите в систему.');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('Ошибка: ' + (data.error || data.msg));
+                    }
+                } catch (error) {
+                    alert('Ошибка соединения с сервером');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

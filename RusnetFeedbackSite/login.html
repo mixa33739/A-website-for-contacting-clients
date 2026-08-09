@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему | АНО «Руснэт»</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <div class="logo">
+            <img src="img/rusnet-logo.png" alt="Логотип Руснэт" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html">На главную</a>
+        </nav>
+    </div>
+</header>
+<div class="login-page-wrapper">
+    <div class="login-card">
+        <h2>Вход в систему</h2>
+        <p class="subtitle">Введите данные для доступа к панели управления</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" name="email" placeholder="name@rusnet.su" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Войти</button>
+        </form>
+        <button onclick="openPasswordRecoveryEmail()"
+                class="btn btn-outline"
+                style="width: 100%; margin-top: 15px; text-decoration: none; cursor: pointer;">
+            🔐 Забыли пароль?
+        </button>
+        <div class="divider">
+            <span>или</span>
+        </div>
+        <a href="register.html" class="btn btn-outline" style="width: 100%; margin-top: 10px;">
+            Создать аккаунт
+        </a>
+        <a href="index.html" class="back-link" style="display: block; text-align: center; margin-top: 15px;">
+            ← Вернуться на главную
+        </a>
+    </div>
+</div>
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-contacts">
+                <p>Алтайский край, г. Барнаул, ул. Никитина 67</p>
+                <p>T: +7 964 086 20-32</p>
+                <p>E: info@rusnet.su</p>
+            </div>
+            <div class="footer-social">
+                <a href="https://vk.com/ano_rusnet_su" target="_blank" class="btn btn-outline vk-btn">
+                    Мы ВКонтакте
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 АНО «Руснэт». Все права защищены.</p>
+            <p class="user-agreement">
+                <a href="https://rusnet.su/polzovatelskoe-soglashenie/" target="_blank">Пользовательское соглашение</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<script src="api.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.querySelector('input[type="email"]').value;
+                const password = document.querySelector('input[type="password"]').value;
+                handleLogin(email, password);
+            });
+        }
+    });
+</script>
+<script>
+    function openPasswordRecoveryEmail() {
+      const emailInput = document.getElementById('email');
+      const userEmail = emailInput ? emailInput.value : '';
+      const subject = 'Восстановление доступа к личному кабинету';
+      let body = 'Здравствуйте!\n\n';
+      body += 'Я забыл(а) пароль от личного кабинета.\n\n';
+      if (userEmail) {
+        body += 'Моя электронная почта: ' + userEmail + '\n\n';
+      } else {
+        body += 'Моя электронная почта: (укажите ваш email)\n\n';
+      }
+      body += 'Пожалуйста, помогите восстановить доступ.\n\n';
+      body += 'С уважением.';
+      const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info@rusnet.su&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(gmailLink, '_blank');
+    }
+</script>
+</body>
+</html>

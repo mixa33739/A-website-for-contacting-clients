@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | АНО «Руснэт»</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-content">
+        <div class="logo">
+            <img src="img/rusnet-logo.png" alt="Логотип Руснэт" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+            <span id="userNameDisplay" style="color: var(--text-gray); margin-right: 15px;">Загрузка...</span>
+            <a href="login.html" style="color: #e74c3c;">Выйти</a>
+        </nav>
+    </div>
+</header>
+
+<main class="dashboard-page-wrapper">
+    <div class="dashboard-card">
+        <h2 style="margin-bottom: 15px;">Личный кабинет</h2>
+        <p class="subtitle" style="margin-bottom: 30px;">Управление обращениями</p>
+        <button onclick="toggleForm()" class="btn btn-primary btn-small" style="width: 100%; margin-bottom: 40px;">
+            ➕ Создать новое обращение
+        </button>
+        <div id="ticketFormContainer" style="display: none; margin-bottom: 50px; background: rgba(15, 23, 42, 0.5); padding: 25px; border-radius: 8px;">
+            <h3 style="margin-bottom: 20px;">Новое обращение</h3>
+            <form id="createTicketForm">
+                <div class="form-group">
+                    <label for="ticketSite">Выберите сайт:</label>
+                    <select id="ticketSite" required class="site-select">
+                        <option value="" disabled selected>-- Загрузка списка... --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketSubject">Тема</label>
+                    <input type="text" id="ticketSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="ticketDescription">Описание</label>
+                    <textarea id="ticketDescription" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-small" style="width: 100%;">Отправить</button>
+                <button type="button" onclick="toggleForm()" class="btn btn-outline btn-small" style="width: 100%; margin-top: 15px;">Отмена</button>
+            </form>
+        </div>
+        <h3 style="margin-bottom: 25px;">Ваши обращения</h3>
+        <div id="noTicketsMessage" style="display: none; text-align: center; padding: 40px; color: var(--text-gray);">
+            <p>У вас пока нет обращений</p>
+        </div>
+        <div id="ticketsTableContainer" style="display: none;">
+            <div class="tickets-table-container">
+                <table class="tickets-table">
+                    <thead>
+                    <tr><th>Тема</th><th>Сайт</th><th>Дата</th><th>Статус</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody id="ticketsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="knowledge-base" style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px;">
+            <h3 style="margin-bottom: 25px; color: #3498db;">💡 Частые проблемы и решения</h3>
+            <details class="kb-item">
+                <summary>📡 Низкая скорость интернета или частые обрывы связи</summary>
+                <div class="kb-content">
+                    <h4>Возможные причины:</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Перегрузка канала (торренты, обновления, стриминг)</li>
+                        <li>Проблемы с Wi-Fi сигналом</li>
+                        <li>Устаревшее оборудование</li>
+                        <li>Технические работы на линии</li>
+                    </ul>
+                    <h4>Что можно сделать самостоятельно:</h4>
+                    <ol style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Перезагрузите роутер</strong> — выключите из сети на 15-20 секунд, затем включите</li>
+                        <li><strong>Проверьте подключения</strong> — убедитесь, что все кабели плотно вставлены</li>
+                        <li><strong>Отключите лишние устройства</strong> от Wi-Fi на время проверки</li>
+                        <li><strong>Подойдите ближе к роутеру</strong> — проверьте, не в этом ли проблема</li>
+                    </ol>
+                    <h4>Когда нужно создать обращение:</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Скорость стабильно ниже заявленной в тарифе</li>
+                        <li>Связь обрывается несколько раз в день</li>
+                        <li>Проблема сохраняется после перезагрузки</li>
+                    </ul>
+                    <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-left: 3px solid #3498db; margin-top: 15px;">
+                        <strong>💡 Совет:</strong> При создании обращения укажите результаты проверки — это поможет специалисту быстрее диагностировать проблему.
+                    </div>
+                </div>
+            </details>
+            <details class="kb-item">
+                <summary>💳 Ошибка 500 или 404 при оплате на сайте</summary>
+                <div class="kb-content">
+                    <h4>Что означают эти ошибки:</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>500</strong> — внутренняя ошибка сервера</li>
+                        <li><strong>404</strong> — страница не найдена</li>
+                    </ul>
+                    <h4>Пошаговая инструкция:</h4>
+                    <ol style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Очистите кэш браузера:</strong>
+                            <ul>
+                                <li>Нажмите <code>Ctrl+Shift+Delete</code></li>
+                                <li>Выберите "Кэшированные изображения и файлы"</li>
+                                <li>Нажмите "Удалить"</li>
+                            </ul>
+                        </li>
+                        <li><strong>Попробуйте другой браузер</strong> (Chrome, Firefox, Edge)</li>
+                        <li><strong>Отключите VPN и прокси</strong> на время оплаты</li>
+                        <li><strong>Проверьте карту:</strong>
+                            <ul>
+                                <li>Достаточно ли средств</li>
+                                <li>Включены ли онлайн-платежи</li>
+                                <li>Не истек ли срок действия</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <h4>Если ничего не помогло:</h4>
+                    <p>Создайте обращение с пометкой "Ошибка при оплате". В описании укажите:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Какой браузер используете</li>
+                        <li>На каком этапе возникает ошибка</li>
+                        <li>Текст ошибки (если отображается)</li>
+                    </ul>
+                </div>
+            </details>
+            <details class="kb-item">
+            <summary>⏳ Сколько времени рассматرивается обращение?</summary>
+            <div class="kb-content">
+                <h4>Сроки обработки:</h4>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li><strong>Стандартные вопросы:</strong> от 1 до 3 рабочих дней.</li>
+                    <li><strong>Критические ошибки (сайт не работает):</strong> в приоритетном порядке, обычно в течение 2–4 часов.</li>
+                    <li><strong>Сложные технические задачи:</strong> могут занять до 5 рабочих дней.</li>
+                </ul>
+                <h4>Как ускорить процесс?</h4>
+                <p style="margin-bottom: 10px;">Убедитесь, что вы подробно описали проблему и приложили скриншоты ошибки (в описании текстом). Чем подробнее описание, тем быстрее специалист сможет диагностировать проблему без уточняющих вопросов.</p>
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-left: 3px solid #3498db; margin-top: 15px;">
+                    <strong>💡 Совет:</strong> Вы всегда можете отследить текущий этап работы по статусу в таблице "Ваши обращения".
+                </div>
+            </div>
+            </details>
+            <details class="kb-item">
+                <summary>🌐 Сайт загружается медленно или не открывается</summary>
+                <div class="kb-content">
+                    <h4>Возможные причины:</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Проблемы с вашим интернетом</li>
+                        <li>Технические работы на сервере</li>
+                        <li>Блокировка антивирусом/фаерволом</li>
+                    </ul>
+                    <h4>Диагностика:</h4>
+                    <ol style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Проверьте другие сайты</strong> — если все тормозит, проблема в интернете</li>
+                        <li><strong>Откройте в режиме инкогнито</strong> (Ctrl+Shift+N)</li>
+                        <li><strong>Отключите расширения браузера</strong> (особенно блокировщики рекламы)</li>
+                        <li><strong>Очистите кэш браузера</strong> (Ctrl+Shift+Delete)</li>
+                    </ol>
+                    <h4>Если сайт не открывается:</h4>
+                    <p>Создайте обращение с указанием:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Вашего провайдера</li>
+                        <li>Браузера и его версии</li>
+                        <li>Текста ошибки (если есть)</li>
+                    </ul>
+                </div>
+            </details>
+            <details class="kb-item">
+                <summary>❓ Как проверить статус моего обращения?</summary>
+                <div class="kb-content">
+                    <h4>Проверка статуса:</h4>
+                    <ol style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>В личном кабинете:</strong>
+                            <ul>
+                                <li>Войдите в систему</li>
+                                <li>Перейдите в раздел <strong>"Ваши обращения"</strong></li>
+                                <li>Найдите нужное обращение в списке</li>
+                                <li>Статус отображается цветной меткой:</li>
+                            </ul>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><span style="color: #3498db; font-weight: bold;">🔵 Новое</span> — заявка принята в работу</li>
+                                <li><span style="color: #f39c12; font-weight: bold;">🟠 В работе</span> — специалист уже решает вашу проблему</li>
+                                <li><span style="color: #27ae60; font-weight: bold;">🟢 Решено</span> — проблема устранена</li>
+                                <li><span style="color: #95a5a6; font-weight: bold;">⚫ Закрыто</span> — обращение закрыто</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <h4>Как найти обращение:</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Обращения отображаются в хронологическом порядке (новые сверху)</li>
+                        <li>Вы видите дату создания и текущий статус</li>
+                    </ul>
+                    <div style="background: rgba(39, 174, 96, 0.1); padding: 15px; border-left: 3px solid #27ae60; margin-top: 15px;">
+                        <strong>💡 Совет:</strong> Среднее время обработки обращения — 24 часа в рабочие дни. Срочные вопросы решаются в течение 2-4 часов.
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+</main>
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 АНО «Руснэт».</p>
+        </div>
+    </div>
+</footer>
+<script src="api.js"></script>
+<script>
+    if (!localStorage.getItem('token')) window.location.href = 'login.html';
+    document.addEventListener('DOMContentLoaded', async () => {
+    await loadSites();
+    await loadTickets();
+    });
+    async function loadSites() {
+    try {
+    const res = await fetch('http://localhost:5000/api/tickets/sites', {
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    });
+    const data = await res.json();
+    const select = document.getElementById('ticketSite');
+    select.innerHTML = '<option value="" disabled selected>-- Выберите сайт --</option>';
+    data.sites.forEach(site => {
+    const opt = document.createElement('option');
+    opt.value = site.id;
+    opt.textContent = site.name;
+    select.appendChild(opt);
+    });
+    } catch (e) { console.error(e); }
+    }
+    document.getElementById('createTicketForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const subject = document.getElementById('ticketSubject').value;
+    const description = document.getElementById('ticketDescription').value;
+    const siteId = document.getElementById('ticketSite').value;
+    try {
+    await fetchAuth('/tickets', {
+    method: 'POST',
+    body: JSON.stringify({ subject, description, site_id: parseInt(siteId), priority: 'medium' })
+    });
+    alert('Создано!');
+    toggleForm();
+    e.target.reset();
+    loadTickets();
+    } catch (err) { alert('Ошибка: ' + err.message); }
+    });
+    function toggleForm() {
+    const form = document.getElementById('ticketFormContainer');
+    form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const userName = localStorage.getItem('userName');
+        if (userName) {
+            userNameDisplay.textContent = userName;
+        } else {
+            loadUserName();
+        }
+    });
+    async function loadUserName() {
+        try {
+            const data = await fetchAuth('/me');
+            if (data.name) {
+                localStorage.setItem('userName', data.name);
+                document.getElementById('userNameDisplay').textContent = data.name;
+            }
+        } catch (error) {
+            console.error('Не удалось загрузить имя пользователя');
+        }
+    }
+</script>
+</body>
+</html>
